@@ -1,52 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Hero from '../../components/HeroSection/HeroSection';
 import CardBanner from '../../components/CardBanner/CardBanner';
+import { mainPageData } from '../../assets/jsonData/mainPageData';
 
-import refImg from '../../assets/refFiles/refImg.webp'
+interface MainPageProps {
+    state: string;
+}
 
-const MainPage: React.FC = () => {
-    const data = [
-        {
-            title: 'Top 10 Shows in India Today',
-            rank: true,
-            type: 'tv',
-            category: 'top_rated'
-        },
-        {
-            title: 'Crime TV Shows',
-            rank: false,
-            type: 'movie',
-            category: 'now_playing'
-        },
-        {
-            title: 'Top 10 Movies in India Today',
-            rank: true,
-            type: 'movie',
-            category: 'top_rated'
-        },
-        {
-            title: 'Popular TV Shows',
-            rank: false,
-            type: 'tv',
-            category: 'popular'
-        },
-        {
-            title: 'Popular Movies',
-            rank: false,
-            type: 'movie',
-            category: 'popular'
-        },
-        {
-            title: 'Airing Today TV Shows',
-            rank: false,
-            type: 'tv',
-            category: 'airing_today'
-        }
-    ];
-
+const MainPage: React.FC<MainPageProps> = ({ state }) => {
+    const [data, setData] = useState<{ title: string; rank: boolean; type: string; category: string; }[]>([])
+    useEffect(() => setData(mainPageData[state as keyof typeof mainPageData]), [state])
+    
     return (
         <div className="main-page">
-            <Hero />
+            <Hero state={state} />
             <div className='mt-[-19vw] relative z-2'>
                 {
                     data.map((item, index) => (

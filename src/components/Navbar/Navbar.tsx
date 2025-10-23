@@ -18,9 +18,9 @@ const Navbar = () => {
             <div className='flex items-center gap-[45px]'>
                 <NetflixIcon className='w-[4.5vw] h-max text-red-600' />
                 <div className='flex gap-[20px]'>
-                    <a href="">Home</a>
-                    <a href="">Shows</a>
-                    <a href="">Movies</a>
+                    <a href="/">Home</a>
+                    <a href="/shows">Shows</a>
+                    <a href="/movies">Movies</a>
                     <a href="">New & Popular</a>
                 </div>
             </div>
