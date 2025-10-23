@@ -68,7 +68,7 @@ export const heroSectionData = {
             backdrop: YL28Img,
             logo: YL28Logo,
             name: 'Mahavatar Narsimha',
-            description: 'Believing himself to be invincible, a demon vows revenge on Lord Vishnu for his brother\'s death, but his devout son stands in the way.',
+            description: 'Nearly 30 years after the rage virus ravaged England, a boy and his father leave the safety of their remote island for a dangerous hunting mission.',
             languages: 'Hindi, Telugu, Tamil, Kannada, Malayalam',
             rating: 'U/A 13+'
         }
