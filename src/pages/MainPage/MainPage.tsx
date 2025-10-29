@@ -13,8 +13,8 @@ const MainPage: React.FC<MainPageProps> = ({ state }) => {
     
     return (
         <div className="main-page">
-            <Hero state={state} />
-            <div className='mt-[-19vw] relative z-2'>
+            {state != 'latest' && <Hero state={state} />}
+            <div className={`${state != 'latest' ? 'mt-[-19vw]' : 'pt-[50px]'} relative z-2`}>
                 {
                     data.map((item, index) => (
                         <CardBanner key={index} data={item} rank={item.rank} />

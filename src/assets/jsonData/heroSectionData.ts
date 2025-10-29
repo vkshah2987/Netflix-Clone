@@ -67,7 +67,7 @@ export const heroSectionData = {
             id: 1,
             backdrop: YL28Img,
             logo: YL28Logo,
-            name: 'Mahavatar Narsimha',
+            name: '28 Year Later',
             description: 'Nearly 30 years after the rage virus ravaged England, a boy and his father leave the safety of their remote island for a dangerous hunting mission.',
             languages: 'Hindi, Telugu, Tamil, Kannada, Malayalam',
             rating: 'U/A 13+'

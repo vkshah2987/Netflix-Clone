@@ -4,6 +4,7 @@ import './App.css'
 import MainPage from "./pages/MainPage/MainPage";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import MiniModal from "./components/MiniModal/MiniModal";
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         <Route path='/' element={<MainPage state={"home"} />} />
         <Route path='/shows' element={<MainPage state={"shows"} />} />
         <Route path='/movies' element={<MainPage state={"movies"} />} />
+        <Route path='/latest' element={<MainPage state={"latest"} />} />
+        
+        <Route path='/modal' element={<div className="py-[10vw] flex justify-center"><MiniModal /></div>} />
       </Routes>
       <div><Footer /></div>
     </div>

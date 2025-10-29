@@ -76,5 +76,25 @@ export const mainPageData = {
                 type: 'movie',
                 category: 'popular'
             }
+        ],
+    "latest": [
+            {
+                title: 'Top 10 Movies in India Today',
+                rank: false,
+                type: 'movie',
+                category: 'top_rated'
+            },
+            {
+                title: 'Crime Movies',
+                rank: false,
+                type: 'movie',
+                category: 'now_playing'
+            },
+            {
+                title: 'Popular Movies',
+                rank: false,
+                type: 'movie',
+                category: 'popular'
+            }
         ]
 }

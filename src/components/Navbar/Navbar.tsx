@@ -21,7 +21,7 @@ const Navbar = () => {
                     <a href="/">Home</a>
                     <a href="/shows">Shows</a>
                     <a href="/movies">Movies</a>
-                    <a href="">New & Popular</a>
+                    <a href="/latest">New & Popular</a>
                 </div>
             </div>
             <div className='flex items-center gap-[15px]'>

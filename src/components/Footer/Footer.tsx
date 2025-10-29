@@ -27,7 +27,7 @@ const Footer = () => {
                 <li className='basis-1/4 flex-[0_0_50%] list-none mb-4 pr-[22px] box-border'><a href="">Contact Us</a></li>
             </ul>
             <div className='text-[11px] text-[#808080] mb-[15px]'>
-                <span>© 1997-2025 Netflix, Inc.</span>
+                <span>© 1997-2025 Netflix, Inc. | Made with ❤️ by Vishal Kumar Shah</span>
             </div>
         </div>
     )
