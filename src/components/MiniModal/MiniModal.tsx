@@ -20,7 +20,6 @@ const MiniModal: React.FC<MiniModalProps> = ({ data }) => {
         ? `https://image.tmdb.org/t/p/original${data.image}` 
         : refImg;
     const displayTitle = data?.title || '28 Year Later';
-    const hasRank = data?.rank !== undefined;
 
     return (
         <div className='w-[23vw] bg-[#181818] shadow-[0px_3px_10px_rgba(0,0,0,0.75)] rounded-[4px] overflow-hidden'>
