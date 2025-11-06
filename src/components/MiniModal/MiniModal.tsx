@@ -6,12 +6,40 @@ import ChevrondownIcon from '../../assets/icons/chevrondown.svg?react';
 
 import refImg from '../../assets/img/28YL.webp';
 
-const MiniModal: React.FC = () => {
+interface MiniModalProps {
+  data?: {
+    image?: string;
+    title?: string;
+    rank?: number;
+  } | null;
+}
+
+const MiniModal: React.FC<MiniModalProps> = ({ data }) => {
+    // Use data from props or fallback to default
+    const displayImage = data?.image 
+        ? `https://image.tmdb.org/t/p/original${data.image}` 
+        : refImg;
+    const displayTitle = data?.title || '28 Year Later';
+    const hasRank = data?.rank !== undefined;
+
     return (
-        <div className='w-[23vw] bg-[#181818] shadow-[0px_3px_10px_rgba(0,0,0,0.75)]'>
+        <div className='w-[23vw] bg-[#181818] shadow-[0px_3px_10px_rgba(0,0,0,0.75)] rounded-[4px] overflow-hidden'>
             <div className='w-full h-[13.5vw] relative overflow-hidden'>
-                <img src={refImg} className='w-full h-full' alt="" />
-                <h2 className='absolute bottom-0 left-[1vw] text-white'>28 Year Later</h2>
+                <img 
+                    src={displayImage} 
+                    className='w-full h-full object-cover' 
+                    alt={displayTitle}
+                    onError={(e) => {
+                        // Fallback if image fails to load
+                        e.currentTarget.src = refImg;
+                    }}
+                />
+                <div className='absolute bottom-0 left-0 right-0 p-[1vw] bg-gradient-to-t from-[#181818] to-transparent'>
+                    <h2 className='text-white text-[1.2vw] font-bold m-0'>
+                        {/* {hasRank && <span className='text-[2vw] font-black mr-2'>#{data.rank}</span>} */}
+                        {displayTitle}
+                    </h2>
+                </div>
             </div>
             <div className='w-full h-[8.5vw] p-[1em]'>
                 <div className='w-full flex justify-between mb-[1em]'>
