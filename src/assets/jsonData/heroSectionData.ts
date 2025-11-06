@@ -2,7 +2,7 @@ import BleachImg from '../../assets/img/bleach.webp';
 import stangerThingsImg from '../../assets/img/strangerThings.webp';
 import TBOB_Img from '../../assets/img/tbob.webp';
 import War2Img from '../../assets/img/war2.webp';
-import YL28Img from '../../assets/img/28yl.webp';
+import YL28Img from '../../assets/img/28YL.webp';
 import MahavatarNarsimhaImg from '../../assets/img/mahavatarNarsimha.webp';
 
 import BleachLogo from '../../assets/logo/bleach.webp';
