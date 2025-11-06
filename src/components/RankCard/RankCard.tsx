@@ -81,14 +81,14 @@ const RankCard: React.FC<RankCardProps> = ({ id, rank, image, title, iconClass }
   return (
         <div 
           ref={cardRef}
-          className="relative w-1/2 h-[50vw] sm:w-1/3 sm:h-[33vw] md:w-1/4 md:h-[25vw] lg:w-1/5 lg:h-[18vw] xl:w-[16.66666667%] xl:h-[11.1vw] border-box inline-block px-[0.2vw] align-top cursor-pointer" 
+          className="relative w-[45%] h-[32vw] sm:w-[32%] sm:h-[22vw] md:w-1/4 md:h-[18vw] lg:w-1/5 lg:h-[14vw] xl:w-[16.66666667%] xl:h-[11.1vw] border-box inline-block px-[0.5vw] sm:px-[0.3vw] md:px-[0.2vw] align-top cursor-pointer" 
           aria-label={title}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div className="flex w-full h-full">
-            <RankIcon rank={rank} className={`w-[49%] h-full ${iconClass}`} />
-            <div style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${image})` }} className="w-[51%] h-full bg-no-repeat bg-cover bg-center"></div>
+            <RankIcon rank={rank} className={`w-[45%] sm:w-[48%] md:w-[49%] h-full ${iconClass}`} />
+            <div style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${image})` }} className="w-[55%] sm:w-[52%] md:w-[51%] h-full bg-no-repeat bg-cover bg-center rounded-r-[2px] md:rounded-r-[4px]"></div>
           </div>
         </div>
   );

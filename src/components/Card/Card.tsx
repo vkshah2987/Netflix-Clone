@@ -80,14 +80,14 @@ const Card: React.FC<CardProps> = ({ id, image, title, name }) => {
     return (
         <div 
           ref={cardRef}
-          className="relative w-1/2 h-[45vw] sm:w-1/3 sm:h-[30vw] md:w-1/4 md:h-[22vw] lg:w-1/5 lg:h-[16vw] xl:w-[16.66666667%] xl:h-[9.5vw] border-box inline-block px-[0.2vw] align-top cursor-pointer"
+          className="relative w-[45%] h-[25vw] sm:w-[32%] sm:h-[18vw] md:w-1/4 md:h-[14vw] lg:w-1/5 lg:h-[11vw] xl:w-[16.66666667%] xl:h-[9.5vw] border-box inline-block px-[0.5vw] sm:px-[0.3vw] md:px-[0.2vw] align-top cursor-pointer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div className="flex relative w-full h-full">
-            <img src={`https://image.tmdb.org/t/p/original${image}`} key={id} alt={title} className={`w-full h-full object-cover brightness-70`} />
-            <div className='absolute w-full sm:w-[20vw] md:w-[18vw] lg:w-[15vw] xl:w-[13vw] text-wrap bottom-0 left-2 sm:left-3 md:left-4 lg:left-5 text-white text-xs sm:text-sm md:text-base'>
-                <h2>{title || name}</h2>
+            <img src={`https://image.tmdb.org/t/p/original${image}`} key={id} alt={title} className={`w-full h-full object-cover brightness-70 rounded-[2px] md:rounded-[4px]`} />
+            <div className='absolute w-full sm:w-[20vw] md:w-[18vw] lg:w-[15vw] xl:w-[13vw] text-wrap bottom-1 sm:bottom-2 md:bottom-2 left-1 sm:left-2 md:left-3 lg:left-4 text-white text-[10px] sm:text-xs md:text-sm'>
+                <h2 className='line-clamp-2'>{title || name}</h2>
             </div>
           </div>
         </div>
