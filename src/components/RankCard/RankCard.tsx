@@ -81,7 +81,7 @@ const RankCard: React.FC<RankCardProps> = ({ id, rank, image, title, iconClass }
   return (
         <div 
           ref={cardRef}
-          className=" relative w-[16.66666667%] h-[11.1vw] border-box inline-block px-[0.2vw] align-top cursor-pointer" 
+          className="relative w-1/2 h-[50vw] sm:w-1/3 sm:h-[33vw] md:w-1/4 md:h-[25vw] lg:w-1/5 lg:h-[18vw] xl:w-[16.66666667%] xl:h-[11.1vw] border-box inline-block px-[0.2vw] align-top cursor-pointer" 
           aria-label={title}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
