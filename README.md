@@ -121,14 +121,29 @@ Before you begin, ensure you have the following installed:
 Create a `.env` file in the root directory and add your TMDB API authentication token:
 
 ```env
-VITE_TMDB_AUTH_KEY=your_tmdb_bearer_token_here
+# TMDB API Token (Server-side only - used by Netlify Functions)
+# This token is NOT exposed to the browser - it's only used in Netlify Functions
+TMDB_V4_TOKEN=your_tmdb_bearer_token_here
 ```
 
 **How to get your TMDB API Key:**
 1. Sign up at [TMDB](https://www.themoviedb.org/signup)
 2. Go to Settings → API
 3. Request an API Key
-4. Use the **Bearer Token** (not the API Key v3)
+4. Use the **Bearer Token (v4 Read Access Token)** - not the API Key v3
+
+**Important Security Note:**
+- The token is now kept **server-side only** in Netlify Functions
+- No API token is exposed in the client-side bundle
+- All TMDB requests are proxied through `/api/tmdb/*`
+- This eliminates CORS issues and protects your API credentials
+
+### Netlify Configuration
+
+The project includes:
+- **`netlify.toml`** - Routes `/api/tmdb/*` to the serverless function
+- **`netlify/functions/tmdb.ts`** - Proxy function that handles TMDB API requests
+- **`public/_headers`** - Ensures correct MIME types for JavaScript files
 
 ### TypeScript Configuration
 
@@ -148,13 +163,23 @@ The `vite.config.ts` includes:
 
 ### Development Mode
 
-Start the development server with hot module replacement:
+The project now uses **Netlify Dev** for local development to match the production environment:
 
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173` (default Vite port).
+This command runs `netlify dev` which:
+- Starts the Vite development server
+- Runs Netlify Functions locally
+- Routes `/api/tmdb/*` requests to the proxy function
+- Loads environment variables from `.env`
+- Serves everything at `http://localhost:8888` (default Netlify Dev port)
+
+**Alternative: Run Vite directly (requires separate Netlify Dev instance)**
+```bash
+npm run dev:vite
+```
 
 ### Preview Production Build
 
@@ -186,7 +211,35 @@ This will:
 2. Bundle and minify the application
 3. Output files to the `dist/` directory
 
-The build output can be deployed to any static hosting service (Vercel, Netlify, GitHub Pages, etc.).
+### Deploying to Netlify
+
+1. **Set up your Netlify site** (if not already done):
+   ```bash
+   netlify init
+   ```
+
+2. **Configure environment variables in Netlify**:
+   - Go to your site in the Netlify dashboard
+   - Navigate to: Site settings → Environment variables
+   - Add: `TMDB_V4_TOKEN=<your_bearer_token>`
+
+3. **Deploy**:
+   ```bash
+   netlify deploy --prod
+   ```
+
+   Or connect your Git repository for automatic deployments.
+
+4. **Verify the deployment**:
+   - Visit your deployed site
+   - Check that API requests to `/api/tmdb/*` return 200 status
+   - Confirm content loads without CORS errors
+   - Test on iOS Safari to verify DNS/compatibility issues are resolved
+
+The build output includes:
+- Static assets in `dist/`
+- Netlify Functions in `netlify/functions/`
+- Proper routing via `netlify.toml`
 
 ## 🧩 Components Overview
 
@@ -247,7 +300,24 @@ The build output can be deployed to any static hosting service (Vercel, Netlify,
 
 ## 🔌 API Integration
 
+### Architecture Overview
+
+All TMDB API requests are now proxied through a **Netlify Function** for security and reliability:
+
+```
+Client → /api/tmdb/* → Netlify Function → api.themoviedb.org
+```
+
+**Benefits:**
+- ✅ No API token exposed in browser
+- ✅ No CORS issues
+- ✅ No iOS DNS/compatibility problems
+- ✅ Works identically in local dev and production
+- ✅ Token stays server-side only
+
 ### Service Layer (`service/processData.ts`)
+
+All API calls now use the proxy endpoint `/api/tmdb/*` instead of calling TMDB directly.
 
 #### `getData(type, category)`
 Custom hook for fetching content from TMDB API.
@@ -264,6 +334,15 @@ Custom hook for fetching content from TMDB API.
 **Example Usage:**
 ```typescript
 const { bindingData, loading, error } = getData('movie', 'popular');
+```
+
+**Implementation:**
+```typescript
+// Requests are made to /api/tmdb/* (proxied to TMDB)
+fetch(`/api/tmdb/movie/popular?language=en-US&page=1`, {
+  headers: { 'accept': 'application/json' }
+});
+// No Authorization header needed - handled by the Netlify Function
 ```
 
 #### `getCardImage(type, id)`
@@ -322,10 +401,22 @@ Custom hook for fetching additional images for a specific item.
 - Ensure Hero section isn't covering it with absolute positioning
 
 **Issue: API data not loading**
-- Verify `.env` file exists with correct `VITE_TMDB_AUTH_KEY`
-- Check browser console for API errors
-- Ensure Bearer token (not API Key) is used
-- Restart dev server after adding environment variables
+- Verify `.env` file exists with correct `TMDB_V4_TOKEN` (not `VITE_TMDB_AUTH_KEY`)
+- Ensure you're running `npm run dev` (netlify dev), not `vite` directly
+- Check browser console and network tab for API errors at `/api/tmdb/*`
+- Verify Bearer token (v4 Read Access Token) is used, not API Key v3
+- Restart dev server after adding/changing environment variables
+
+**Issue: "TMDB_V4_TOKEN not configured" error**
+- Check that `.env` contains `TMDB_V4_TOKEN=<your_token>`
+- Verify the file is in the project root (same level as `package.json`)
+- Restart `netlify dev` after creating/editing `.env`
+
+**Issue: 502 Bad Gateway or proxy errors**
+- Check that Netlify CLI is installed: `npm list netlify-cli`
+- Ensure `netlify/functions/tmdb.ts` exists and has no syntax errors
+- Verify `netlify.toml` redirects are configured correctly
+- Check Netlify Dev logs in terminal for function errors
 
 **Issue: SVG icons not displaying**
 - Verify `vite-plugin-svgr` is installed
@@ -336,6 +427,80 @@ Custom hook for fetching additional images for a specific item.
 - Check TMDB API response in browser console
 - Verify image paths use correct TMDB CDN URL
 - Confirm `backdrop_path` or `poster_path` exists in API response
+
+**Issue: Works locally but fails on Netlify deployment**
+- Verify `TMDB_V4_TOKEN` is set in Netlify dashboard environment variables
+- Check Netlify Function logs for errors
+- Ensure build command is `npm run build` and publish directory is `dist`
+- Verify `netlify.toml` is committed to Git
+
+### Testing the Proxy
+
+**Local testing:**
+```bash
+# Start Netlify Dev
+npm run dev
+
+# In another terminal, test the proxy
+curl http://localhost:8888/api/tmdb/configuration
+```
+
+**Production testing:**
+```bash
+# After deployment
+curl https://your-site.netlify.app/api/tmdb/configuration
+```
+
+Both should return JSON with status 200.
+
+## ✅ Verification Checklist
+
+### Local Development (using Netlify Dev)
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment:**
+   - Create `.env` file in project root
+   - Add: `TMDB_V4_TOKEN=<your_bearer_token>`
+
+3. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Verify setup:**
+   - App opens at `http://localhost:8888`
+   - Open browser DevTools → Network tab
+   - Confirm requests to `/api/tmdb/...` return 200 status
+   - Check that data loads and UI renders properly
+   - Verify no CORS errors in console
+
+### Production (Netlify)
+
+1. **Configure Netlify environment:**
+   - Add `TMDB_V4_TOKEN` in: Site settings → Environment variables
+
+2. **Deploy:**
+   ```bash
+   netlify deploy --prod
+   ```
+   Or push to connected Git repository
+
+3. **Verify deployment:**
+   - Visit your live site on desktop and mobile
+   - Test on iOS Safari specifically
+   - Confirm `/api/tmdb/*` endpoints return 200
+   - Verify content loads without infinite spinner
+   - Check browser console for errors
+
+4. **CLI sanity check:**
+   ```bash
+   curl -v "https://your-site.netlify.app/api/tmdb/configuration"
+   ```
+   Should return JSON configuration data with 200 status
 
 ## 📝 Development Notes
 
