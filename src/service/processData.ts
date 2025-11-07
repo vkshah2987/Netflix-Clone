@@ -9,12 +9,12 @@ export const getData = (type: string, category: string) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ category ? category : 'popular' }?language=en-US&page=1`, {
+                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ category ? category : 'popular' }?language=en-US&page=1&api_key=0643df82a21fe57603a4d4e53100e8be`, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
+                    // headers: {
+                    //     'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
+                    //     'Content-Type': 'application/json'
+                    // }
                 });
                 
                 if (!response.ok) {
@@ -47,12 +47,12 @@ export const getCardImage = (type: string, id: number) => {
         const fetchImage = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ id ? id : 'popular' }/images`, {
+                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ id ? id : 'popular' }/images?api_key=0643df82a21fe57603a4d4e53100e8be`, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
+                    // headers: {
+                    //     'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
+                    //     'Content-Type': 'application/json'
+                    // }
                 });
 
                 if (!response.ok) {
