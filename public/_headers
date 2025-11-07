@@ -1,5 +1,0 @@
-/*
-  Ensure JS is served with correct MIME
-*/
-*.js
-  Content-Type: application/javascript; charset=utf-8

@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react"
 
-// Use direct API in development if proxy fails, use proxy in production
-const API_BASE = import.meta.env.DEV && import.meta.env.VITE_USE_DIRECT_API 
-    ? 'https://api.themoviedb.org/3'
-    : '/api/tmdb';
-    
-const USE_TOKEN_HEADER = import.meta.env.DEV && import.meta.env.VITE_USE_DIRECT_API;
-
 export const getData = (type: string, category: string) => {
     const [bindingData, setBindingData] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -16,19 +9,12 @@ export const getData = (type: string, category: string) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                
-                const headers: HeadersInit = {
-                    'accept': 'application/json'
-                };
-                
-                // Add auth header only if using direct API in dev
-                if (USE_TOKEN_HEADER && import.meta.env.VITE_TMDB_AUTH_KEY) {
-                    headers['Authorization'] = `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`;
-                }
-                
-                const response = await fetch(`${API_BASE}/${ type ? type : 'movie' }/${ category ? category : 'popular' }?language=en-US&page=1`, {
+                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ category ? category : 'popular' }?language=en-US&page=1`, {
                     method: 'GET',
-                    headers
+                    headers: {
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
                 });
                 
                 if (!response.ok) {
@@ -44,7 +30,9 @@ export const getData = (type: string, category: string) => {
             }
         };
 
-        fetchData();
+        if (import.meta.env.VITE_TMDB_AUTH_KEY) {
+            fetchData();
+        }
     }, [type, category]);
     
     return { bindingData, loading, error };
@@ -59,19 +47,12 @@ export const getCardImage = (type: string, id: number) => {
         const fetchImage = async () => {
             try {
                 setLoading(true);
-                
-                const headers: HeadersInit = {
-                    'accept': 'application/json'
-                };
-                
-                // Add auth header only if using direct API in dev
-                if (USE_TOKEN_HEADER && import.meta.env.VITE_TMDB_AUTH_KEY) {
-                    headers['Authorization'] = `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`;
-                }
-                
-                const response = await fetch(`${API_BASE}/${ type ? type : 'movie' }/${ id ? id : 'popular' }/images`, {
+                const response = await fetch(`https://api.themoviedb.org/3/${ type ? type : 'movie' }/${ id ? id : 'popular' }/images`, {
                     method: 'GET',
-                    headers
+                    headers: {
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_AUTH_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
                 });
 
                 if (!response.ok) {
@@ -87,8 +68,8 @@ export const getCardImage = (type: string, id: number) => {
                 setLoading(false);
             }
         }
-        // Only attempt fetch if we have a valid id
-        if (id) {
+        // Only attempt fetch if we have the required API key and a valid id
+        if (import.meta.env.VITE_TMDB_AUTH_KEY && id) {
             fetchImage();
         } else {
             setImage(null);
