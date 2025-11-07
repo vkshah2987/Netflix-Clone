@@ -10,6 +10,30 @@ import { ModalProvider, useModal } from "./service/modalService";
 function AppContent() {
   const { isVisible, isHiding, position, cardData, cancelHideModal, scheduleHideModal } = useModal();
 
+  // Calculate safe position to keep modal within viewport with padding
+  const getSafePosition = () => {
+    if (!position) return { left: 0, top: 0 };
+
+    // Get viewport dimensions
+    const viewportWidth = window.innerWidth;
+    // Negative padding - allow modal to extend beyond viewport edges
+    const viewportPadding = viewportWidth < 640 ? 10 : -160;
+    
+    // Modal half-widths (approximate based on responsive sizes)
+    const modalHalfWidth = viewportWidth < 640 ? 160 : viewportWidth < 768 ? 200 : viewportWidth * 0.225;
+    
+    // Calculate boundaries
+    const minX = viewportPadding + modalHalfWidth;
+    const maxX = viewportWidth - viewportPadding - modalHalfWidth;
+    
+    // Clamp the position
+    const safeX = Math.max(minX, Math.min(maxX, position.x));
+    
+    return { left: safeX, top: position.y };
+  };
+
+  const safePos = getSafePosition();
+
   return (
     <div className="relative">
       <div className="sticky inset-0 z-3 top-0 -mb-[68px]"><Navbar /></div>
@@ -30,9 +54,9 @@ function AppContent() {
             isHiding ? 'animate-fadeOutScale' : 'animate-fadeInScale'
           }`}
           style={{
-            left: `${position.x}px`,
-            top: `${position.y}px`, // Center of the card
-            transform: 'translate(-50%, -50%)', // Center the modal on card center
+            left: `${safePos.left}px`,
+            top: `${safePos.top}px`,
+            transform: 'translate(-50%, -50%)',
           }}
           onMouseEnter={cancelHideModal}
           onMouseLeave={scheduleHideModal}
