@@ -29,11 +29,12 @@ const Navbar = () => {
                     <a href="/latest">New & Popular</a>
                 </div>
                 {/* Mobile menu button - you can expand this with a hamburger menu */}
-                <div className='relative md:hidden text-[11px] sm:text-[12px]'>
-                    <span className="flex justify-center items-center" onClick={()=>{setMenuState(!menuState)}}>
-                    <a>Browse</a>
-                    <span className='border-solid border-t-[4px] border-x-[4px] md:border-t-[5px] md:border-x-[5px] border-b-0 border-t-white border-x-transparent h-0 w-0 ml-[6px] sm:ml-[8px] md:ml-[10px] transition-transform duration-[367ms] ease-[cubic-bezier(.21,0,.07,1)]'></span></span>
-                    <div className={`absolute top-full mt-2 flex flex-col items-center bg-black/95 border border-gray-700 border-t-[1.5px] border-t-white rounded-md py-2 min-w-[150px] ${menuState ? 'block' : 'hidden'}`}>
+                <div className='flex justify-center items-center relative md:hidden text-[11px] sm:text-[12px]'>
+                    <span className="flex justify-center items-center" onClick={() => { setMenuState(!menuState) }}>
+                        <a>Browse</a>
+                        <span className='border-solid border-t-[4px] border-x-[4px] md:border-t-[5px] md:border-x-[5px] border-b-0 border-t-white border-x-transparent h-0 w-0 ml-[6px] sm:ml-[8px] md:ml-[10px] transition-transform duration-[367ms] ease-[cubic-bezier(.21,0,.07,1)]'></span>
+                    </span>
+                    <div className={`absolute top-full left-center mt-2 flex flex-col items-center bg-black/95 border border-gray-700 border-t-[1.5px] border-t-white rounded-md py-2 min-w-[150px] ${menuState ? 'block' : 'hidden'}`}>
                         <a href="/" className="px-4 py-2 hover:bg-white/10 transition-colors h-[50px] flex items-center">Home</a>
                         <a href="/shows" className="px-4 py-2 hover:bg-white/10 transition-colors h-[50px] flex items-center">Shows</a>
                         <a href="/movies" className="px-4 py-2 hover:bg-white/10 transition-colors h-[50px] flex items-center">Movies</a>
