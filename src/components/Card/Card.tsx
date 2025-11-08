@@ -3,13 +3,14 @@ import { useModal } from '../../service/modalService'
 
 interface CardProps {
   id: number;
+  type: string;
   image: string;
   title: string;
   name?: string;
   className?: string;
 }
 
-const Card: React.FC<CardProps> = ({ id, image, title, name }) => {
+const Card: React.FC<CardProps> = ({ id, type, image, title, name }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const { showModal, scheduleHideModal, cancelHideModal, updatePosition, cardId } = useModal();
     const hoverTimeoutRef = useRef<number | null>(null);
@@ -60,6 +61,8 @@ const Card: React.FC<CardProps> = ({ id, image, title, name }) => {
             width: rect.width,
             height: rect.height
           }, {
+            id,
+            type,
             image,
             title: title || name
           });

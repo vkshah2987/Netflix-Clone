@@ -4,14 +4,15 @@ import { RankIcon } from "../../service/RankIcon"; // Reusable SVG component
 import { useModal } from "../../service/modalService";
 
 interface RankCardProps {
-  id: number
+  id: number;
+  type: string;
   rank: number;
   image: string;
   title: string;
   iconClass?: string;
 }
 
-const RankCard: React.FC<RankCardProps> = ({ id, rank, image, title, iconClass }) => {
+const RankCard: React.FC<RankCardProps> = ({ id, type, rank, image, title, iconClass }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { showModal, scheduleHideModal, cancelHideModal, updatePosition, cardId } = useModal();
   const hoverTimeoutRef = useRef<number | null>(null);
@@ -61,6 +62,8 @@ const RankCard: React.FC<RankCardProps> = ({ id, rank, image, title, iconClass }
           width: rect.width,
           height: rect.height
         }, {
+          id,
+          type,
           image,
           title,
           rank

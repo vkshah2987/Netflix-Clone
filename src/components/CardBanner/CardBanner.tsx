@@ -21,7 +21,6 @@ const CardBanner: React.FC<BannerProps> = ({ rank, data }) => {
 
   const { bindingData } = getData(data.type, data.category);
   const items = bindingData?.slice(0, 10);
-  console.log("Movie List: ", items)
 
   return (
     <div id="ranked-cards" className="flex flex-col relative border-box my-[6vw] sm:my-[4vw] md:my-[3.5vw] lg:my-[3vw]">
@@ -36,8 +35,8 @@ const CardBanner: React.FC<BannerProps> = ({ rank, data }) => {
                 <div className='overflow-x-auto overflow-y-hidden whitespace-nowrap relative scrollbar-hide'>
                     {
                         items && items.map((item: { title: string; backdrop_path: string; poster_path: string; id: number; name: string }, index: number) => (
-                            rank ? <RankCard key={item.id} id={item.id} rank={index+1} title={item.title} image={item.poster_path} /> :
-                            <Card key={item.id} id={item.id} title={item.title} image={item.backdrop_path} name={item.name} />
+                            rank ? <RankCard key={item.id} id={item.id} type={data.type} rank={index+1} title={item.title} image={item.poster_path} /> :
+                            <Card key={item.id} id={item.id} type={data.type} title={item.title} image={item.backdrop_path} name={item.name} />
                         ))
                     }
                 </div>

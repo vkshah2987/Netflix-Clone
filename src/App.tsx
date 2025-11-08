@@ -6,9 +6,10 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import MiniModal from "./components/MiniModal/MiniModal";
 import { ModalProvider, useModal } from "./service/modalService";
+import Player from "./pages/Player/Player";
 
 function AppContent() {
-  const { isVisible, isHiding, position, cardData, cancelHideModal, scheduleHideModal } = useModal();
+  const { isVisible, isHiding, position, cardData, cancelHideModal, scheduleHideModal, hideModal } = useModal();
 
   // Calculate safe position to keep modal within viewport with padding
   const getSafePosition = () => {
@@ -36,16 +37,21 @@ function AppContent() {
 
   return (
     <div className="relative">
-      <div className="sticky inset-0 z-3 top-0 -mb-[68px]"><Navbar /></div>
+      {window.location.pathname.includes('/player/') ? null : (
+        <div className="sticky inset-0 z-3 top-0"><Navbar /></div>
+      )}
+      {/* <div className="sticky inset-0 z-3 top-0 -mb-[68px]"><Navbar /></div> */}
       <Routes>
         <Route path='/' element={<MainPage state={"home"} />} />
         <Route path='/shows' element={<MainPage state={"shows"} />} />
         <Route path='/movies' element={<MainPage state={"movies"} />} />
         <Route path='/latest' element={<MainPage state={"latest"} />} />
-        
-        <Route path='/modal' element={<div className="py-[10vw] flex justify-center"><MiniModal /></div>} />
+        <Route path='/player/:type/:id' element={<Player />} />
       </Routes>
-      <div><Footer /></div>
+      {window.location.pathname.includes('/player/') ? null : (
+        <div><Footer /></div>
+      )}
+      {/* <div><Footer /></div> */}
       
       {/* Positioned MiniModal based on card hover */}
       {(isVisible || isHiding) && position && (
@@ -61,7 +67,7 @@ function AppContent() {
           onMouseEnter={cancelHideModal}
           onMouseLeave={scheduleHideModal}
         >
-          <MiniModal data={cardData} />
+          <MiniModal data={cardData} onClose={hideModal} />
         </div>
       )}
     </div>

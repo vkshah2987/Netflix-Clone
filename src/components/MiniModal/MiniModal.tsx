@@ -3,18 +3,22 @@ import PlayIcon from '../../assets/icons/playBtn.svg?react';
 import ThumbsupIcon from '../../assets/icons/thumbsup.svg?react';
 import Plus from '../../assets/icons/plus.svg?react';
 import ChevrondownIcon from '../../assets/icons/chevrondown.svg?react';
+import { Link } from 'react-router-dom';
 
 import refImg from '../../assets/img/28YL.webp';
 
 interface MiniModalProps {
   data?: {
+    id: number;
+    type: string;
     image?: string;
     title?: string;
     rank?: number;
   } | null;
+  onClose?: () => void;
 }
 
-const MiniModal: React.FC<MiniModalProps> = ({ data }) => {
+const MiniModal: React.FC<MiniModalProps> = ({ data, onClose }) => {
     // Use data from props or fallback to default
     const displayImage = data?.image 
         ? `https://image.tmdb.org/t/p/original${data.image}` 
@@ -24,21 +28,31 @@ const MiniModal: React.FC<MiniModalProps> = ({ data }) => {
     return (
         <div className='w-[320px] sm:w-[400px] md:w-[45vw] lg:w-[32vw] xl:w-[23vw] max-w-[95vw] bg-[#181818] shadow-[0px_3px_10px_rgba(0,0,0,0.75)] rounded-[6px] sm:rounded-[4px] overflow-hidden'>
             <div className='w-full h-[180px] sm:h-[225px] md:h-[26vw] lg:h-[18vw] xl:h-[13.5vw] relative overflow-hidden'>
-                <img 
-                    src={displayImage} 
-                    className='w-full h-full object-cover' 
-                    alt={displayTitle}
-                    onError={(e) => {
-                        // Fallback if image fails to load
-                        e.currentTarget.src = refImg;
+                <Link 
+                    to={`/player/${data?.type}/${data?.id}`}
+                    onClick={() => {
+                        // Close the modal when clicking to navigate
+                        if (onClose) {
+                            onClose();
+                        }
                     }}
-                />
-                <div className='absolute bottom-0 left-0 right-0 p-[12px] sm:p-[16px] md:p-[1.5vw] lg:p-[1.2vw] xl:p-[1vw] bg-gradient-to-t from-[#181818] to-transparent'>
-                    <h2 className='text-white text-[18px] sm:text-[20px] md:text-[2vw] lg:text-[1.5vw] xl:text-[1.2vw] font-bold m-0 line-clamp-2'>
-                        {/* {hasRank && <span className='text-[2vw] font-black mr-2'>#{data.rank}</span>} */}
-                        {displayTitle}
-                    </h2>
-                </div>
+                >
+                    <img
+                        src={displayImage}
+                        className='w-full h-full object-cover'
+                        alt={displayTitle}
+                        onError={(e) => {
+                            // Fallback if image fails to load
+                            e.currentTarget.src = refImg;
+                        }}
+                    />
+                    <div className='absolute bottom-0 left-0 right-0 p-[12px] sm:p-[16px] md:p-[1.5vw] lg:p-[1.2vw] xl:p-[1vw] bg-gradient-to-t from-[#181818] to-transparent'>
+                        <h2 className='text-white text-[18px] sm:text-[20px] md:text-[2vw] lg:text-[1.5vw] xl:text-[1.2vw] font-bold m-0 line-clamp-2'>
+                            {/* {hasRank && <span className='text-[2vw] font-black mr-2'>#{data.rank}</span>} */}
+                            {displayTitle}
+                        </h2>
+                    </div>
+                </Link>
             </div>
             <div className='w-full p-[16px] sm:p-[18px] md:p-[1em]'>
                 <div className='w-full flex justify-between mb-[12px] sm:mb-[14px] md:mb-[1em]'>
